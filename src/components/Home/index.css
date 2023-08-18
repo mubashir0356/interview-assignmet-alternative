@@ -6,3 +6,39 @@
   justify-content: center;
   align-items: center;
 }
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.content {
+  font-family: 'Roboto';
+  font-size: 22px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.username {
+  font-family: 'Roboto';
+  font-size: 22px;
+  color: blue;
+  font-weight: 600;
+}
+
+.logout-button {
+  cursor: pointer;
+  outline: none;
+  font-family: 'Roboto';
+  font-size: 18px;
+  border-radius: 5px;
+  width: 100px;
+  padding: 5px;
+  background-color: red;
+  color: black;
+  font-weight: 500;
+  margin-bottom: 10px;
+}

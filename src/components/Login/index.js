@@ -1,4 +1,5 @@
 import {useState, useContext} from 'react'
+import {Redirect} from 'react-router-dom'
 
 import AuthContext from '../../context/AuthContext'
 
@@ -11,6 +12,8 @@ const Login = props => {
   const [enteredPassword, setEnteredPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
+  // using the below hooks to know whether if the specific input is valid
+
   const [isFirstNameTouched, setIsFirstNameTouched] = useState(false)
   const [isLastNameTouched, setIsLastNameTouched] = useState(false)
   const [isEmailTouched, setIsEmailTouched] = useState(false)
@@ -21,8 +24,7 @@ const Login = props => {
 
   const [showFormError, setShowFormError] = useState(false)
 
-  const loginContext = useContext(AuthContext)
-  const {onLogin} = loginContext
+  // validating the input elements
 
   const isFirstNameValid = firstName.trim() !== ''
   const firstNameHasError = !isFirstNameValid && isFirstNameTouched
@@ -39,6 +41,8 @@ const Login = props => {
   const isConfirmPasswordValid = enteredPassword === confirmPassword
   const confirmPasswordHasError =
     !isConfirmPasswordValid && isConfirmPasswordTouched
+
+  // managing event handlers
 
   const onChangeFirstName = event => setFirstName(event.target.value)
 
@@ -61,6 +65,8 @@ const Login = props => {
   const onBlurEnteredPassword = () => setIsPasswordTouched(true)
 
   const onBlurConfirmPassword = () => setIsConfirmPasswordTouched(true)
+
+  // defining styling for valid and in-valid input fields
 
   const firstNameClassName = firstNameHasError
     ? 'input-field invalid-input'
@@ -90,6 +96,11 @@ const Login = props => {
     formIsValid = true
   }
 
+  // using context to know if the user is already signed up and then conditionally render the output
+
+  const loginContext = useContext(AuthContext)
+  const {onLogin, isLoggedIn} = loginContext
+
   const onSubmitForm = event => {
     event.preventDefault()
 
@@ -109,6 +120,10 @@ const Login = props => {
     } else {
       setShowFormError(true)
     }
+  }
+
+  if (isLoggedIn) {
+    return <Redirect to="/" />
   }
 
   return (

@@ -7,7 +7,15 @@ import Home from './components/Home'
 import AuthContext from './context/AuthContext'
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  // initially checking whether the user is logged in
+  // since i stored the user details in local storage using localStorage methods to retrieve details
+
+  const userDetailsInJSON = localStorage.getItem('userDetails')
+  const userDetails = JSON.parse(userDetailsInJSON)
+
+  const initialLoggedInState = userDetails !== null
+
+  const [isLoggedIn, setIsLoggedIn] = useState(initialLoggedInState)
 
   const onClickLogin = () => setIsLoggedIn(true)
 
