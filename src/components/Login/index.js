@@ -1,4 +1,6 @@
-import {useState} from 'react'
+import {useState, useContext} from 'react'
+
+import AuthContext from '../../context/AuthContext'
 
 import './index.css'
 
@@ -17,16 +19,10 @@ const Login = props => {
     false,
   )
 
-  //   const isFormTouched =
-  //     isFirstNameTouched &&
-  //     isLastNameTouched &&
-  //     isEmailTouched &&
-  //     isPasswordTouched &&
-  //     isConfirmPasswordTouched
-
   const [showFormError, setShowFormError] = useState(false)
 
-  // const [formIsValid, setFormIsValid] = useState(isFormTouched)
+  const loginContext = useContext(AuthContext)
+  const {onLogin} = loginContext
 
   const isFirstNameValid = firstName.trim() !== ''
   const firstNameHasError = !isFirstNameValid && isFirstNameTouched
@@ -99,7 +95,17 @@ const Login = props => {
 
     if (formIsValid) {
       const {history} = props
-      history.replace('/home')
+
+      const userDetails = {
+        firstName,
+        lastName,
+        email,
+        enteredPassword,
+      }
+
+      localStorage.setItem('userDetails', JSON.stringify(userDetails))
+      onLogin()
+      history.replace('/')
     } else {
       setShowFormError(true)
     }
