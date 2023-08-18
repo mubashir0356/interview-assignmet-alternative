@@ -8,7 +8,7 @@ import AuthContext from './context/AuthContext'
 
 const App = () => {
   // initially checking whether the user is logged in
-  // since i stored the user details in local storage using localStorage methods to retrieve details
+  // since i stored the user details in local storage using localStorage methods to retrieve details.
 
   const userDetailsInJSON = localStorage.getItem('userDetails')
   const userDetails = JSON.parse(userDetailsInJSON)

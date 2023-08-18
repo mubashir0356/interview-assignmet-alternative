@@ -2,71 +2,62 @@ import {useState, useContext} from 'react'
 import {Redirect} from 'react-router-dom'
 
 import AuthContext from '../../context/AuthContext'
+import useInput from '../../hooks/use-input'
 
 import './index.css'
 
+const isNotEmpty = value => value.trim() !== ''
+const isEmail = value => value.includes('@')
+const isEnteredPasswordValid = value => value.length >= 8
+
 const Login = props => {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('')
-  const [enteredPassword, setEnteredPassword] = useState('')
+  const {
+    value: firstName,
+    isValid: firstNameIsValid,
+    hasError: firstNameHasError,
+    valueChangeHandler: firstNameChangeHandler,
+    inputBlurHandler: firstNameBlurHandler,
+  } = useInput(isNotEmpty)
+
+  const {
+    value: lastName,
+    isValid: lastNameIsValid,
+    hasError: lastNameHasError,
+    valueChangeHandler: lastNameChangeHandler,
+    inputBlurHandler: lastNameBlurHandler,
+  } = useInput(isNotEmpty)
+
+  const {
+    value: email,
+    isValid: emailIsValid,
+    hasError: emailHasError,
+    valueChangeHandler: emailChangeHandler,
+    inputBlurHandler: emailBlurHandler,
+  } = useInput(isEmail)
+
+  const {
+    value: enteredPassword,
+    isValid: enteredPasswordIsValid,
+    hasError: enteredPasswordHasError,
+    valueChangeHandler: enteredPasswordChangeHandler,
+    inputBlurHandler: enteredPasswordBlurHandler,
+  } = useInput(isEnteredPasswordValid)
+
   const [confirmPassword, setConfirmPassword] = useState('')
-
-  // using the below hooks to know whether if the specific input is valid
-
-  const [isFirstNameTouched, setIsFirstNameTouched] = useState(false)
-  const [isLastNameTouched, setIsLastNameTouched] = useState(false)
-  const [isEmailTouched, setIsEmailTouched] = useState(false)
-  const [isPasswordTouched, setIsPasswordTouched] = useState(false)
   const [isConfirmPasswordTouched, setIsConfirmPasswordTouched] = useState(
     false,
   )
 
   const [showFormError, setShowFormError] = useState(false)
 
-  // validating the input elements
-
-  const isFirstNameValid = firstName.trim() !== ''
-  const firstNameHasError = !isFirstNameValid && isFirstNameTouched
-
-  const isLastNameValid = lastName.trim() !== ''
-  const lastNameHasError = !isLastNameValid && isLastNameTouched
-
-  const isEmailValid = email.includes('@')
-  const emailHasError = !isEmailValid && isEmailTouched
-
-  const isPasswordValid = enteredPassword.length >= 8
-  const enteredPasswordHasError = !isPasswordValid && isPasswordTouched
-
   const isConfirmPasswordValid = enteredPassword === confirmPassword
   const confirmPasswordHasError =
     !isConfirmPasswordValid && isConfirmPasswordTouched
 
-  // managing event handlers
-
-  const onChangeFirstName = event => setFirstName(event.target.value)
-
-  const onChangeLastName = event => setLastName(event.target.value)
-
-  const onChangeEmail = event => setEmail(event.target.value)
-
-  const onChangeEnteredPassword = event =>
-    setEnteredPassword(event.target.value)
-
   const onChangeConfirmPassword = event =>
     setConfirmPassword(event.target.value)
 
-  const onBlurFirstName = () => setIsFirstNameTouched(true)
-
-  const onBlurLastName = () => setIsLastNameTouched(true)
-
-  const onBlurEmail = () => setIsEmailTouched(true)
-
-  const onBlurEnteredPassword = () => setIsPasswordTouched(true)
-
   const onBlurConfirmPassword = () => setIsConfirmPasswordTouched(true)
-
-  // defining styling for valid and in-valid input fields
 
   const firstNameClassName = firstNameHasError
     ? 'input-field invalid-input'
@@ -87,10 +78,10 @@ const Login = props => {
   let formIsValid = false
 
   if (
-    isFirstNameValid &&
-    isLastNameValid &&
-    isEmailValid &&
-    isPasswordValid &&
+    firstNameIsValid &&
+    lastNameIsValid &&
+    emailIsValid &&
+    enteredPasswordIsValid &&
     isConfirmPasswordValid
   ) {
     formIsValid = true
@@ -137,8 +128,8 @@ const Login = props => {
             placeholder="Enter First name"
             id="firstName"
             value={firstName}
-            onChange={onChangeFirstName}
-            onBlur={onBlurFirstName}
+            onChange={firstNameChangeHandler}
+            onBlur={firstNameBlurHandler}
             className={firstNameClassName}
             type="text"
           />
@@ -152,8 +143,8 @@ const Login = props => {
             placeholder="Enter Last name"
             id="lastName"
             value={lastName}
-            onChange={onChangeLastName}
-            onBlur={onBlurLastName}
+            onChange={lastNameChangeHandler}
+            onBlur={lastNameBlurHandler}
             className={lastNameClassName}
             type="text"
           />
@@ -167,8 +158,8 @@ const Login = props => {
             placeholder="example@example.com"
             id="email"
             value={email}
-            onChange={onChangeEmail}
-            onBlur={onBlurEmail}
+            onChange={emailChangeHandler}
+            onBlur={emailBlurHandler}
             className={emailClassName}
             type="email"
           />
@@ -182,8 +173,8 @@ const Login = props => {
             placeholder="Enter Password"
             id="password"
             value={enteredPassword}
-            onChange={onChangeEnteredPassword}
-            onBlur={onBlurEnteredPassword}
+            onChange={enteredPasswordChangeHandler}
+            onBlur={enteredPasswordBlurHandler}
             className={passwordClassName}
             type="password"
           />

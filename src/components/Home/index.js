@@ -6,7 +6,7 @@ import AuthContext from '../../context/AuthContext'
 
 import './index.css'
 
-const Home = props => {
+const Home = () => {
   const loginDetails = useContext(AuthContext)
   const {isLoggedIn, onLogout} = loginDetails
 
